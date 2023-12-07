@@ -12,6 +12,7 @@ void Interpreter::resize()
 {
     Interpreter interpreter(size * 2);
     interpreter.copy(this->cells, this->size);
+    interpreter.currentCell = currentCell;
     *this = interpreter;
 }
 
@@ -101,7 +102,7 @@ void Interpreter::decrementPointer()
 
 void Interpreter::print() const
 {
-    printf("%c", cells[currentCell] + '0');
+    printf("%c", cells[currentCell]);
 }
 
 void Interpreter::read()
