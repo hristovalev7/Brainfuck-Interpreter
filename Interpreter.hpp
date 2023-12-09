@@ -9,6 +9,7 @@
 #include <queue>
 #include <stack>
 #include "Byte.hpp"
+#include "HelpterFunctions.hpp"
 
 class Interpreter
 {
@@ -19,6 +20,8 @@ private:
     size_t size;
     std::unordered_map<size_t, size_t> leftBrackets;
     std::unordered_map<size_t, size_t> rightBrackets;
+
+    void removeRedundantCharacters();
 
     void validateCode();
 
@@ -36,17 +39,6 @@ private:
 
     void copy(const Interpreter& other);
 
-public:
-    Interpreter();
-
-    explicit Interpreter(const std::string& _fileName, size_t _size);
-
-    Interpreter(const Interpreter& other);
-
-    Interpreter& operator=(const Interpreter& other);
-
-    ~Interpreter();
-
     void incrementValue();
 
     void decrementValue();
@@ -58,6 +50,17 @@ public:
     void print() const;
 
     void read();
+
+public:
+    Interpreter();
+
+    explicit Interpreter(const std::string& _fileName, size_t _size);
+
+    Interpreter(const Interpreter& other);
+
+    Interpreter& operator=(const Interpreter& other);
+
+    ~Interpreter();
 
     void executeCode();
 };

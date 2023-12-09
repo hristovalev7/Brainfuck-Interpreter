@@ -1,5 +1,32 @@
 #include "Interpreter.hpp"
 
+void Interpreter::removeRedundantCharacters()
+{
+    std::ifstream fileR(fileName, std::ios::in);
+    if (!fileR.is_open())
+    {
+        throw std::runtime_error("The given file couldn't be opened!");
+    }
+    std::queue<char> chars;
+    char currentChar{};
+    while (fileR.good() && fileR.peek() != EOF)
+    {
+        fileR.get(currentChar);
+        if (isOperation(currentChar))
+        {
+            chars.push(currentChar);
+        }
+    }
+    fileR.close();
+    std::ofstream fileW = std::ofstream(fileName, std::ios::trunc | std::ios::out);
+    while (fileW.good() && !chars.empty())
+    {
+        fileW.put(chars.front());
+        chars.pop();
+    }
+    fileW.close();
+}
+
 void Interpreter::validateCode()
 {
     std::ifstream file(fileName, std::ios::in);
@@ -27,6 +54,7 @@ void Interpreter::validateCode()
     {
         throw std::runtime_error("The number of '[' doesn't match the number of ']'");
     }
+    file.close();
 }
 
 void Interpreter::executeOperation(char operation, std::ifstream& file)
@@ -55,11 +83,11 @@ void Interpreter::executeOperation(char operation, std::ifstream& file)
         case '[':
             if (cells[currentCell] == Byte(0))
             {
-                file.seekg(leftBrackets[operationPosition] - 1 + 1);
+                file.seekg(leftBrackets[operationPosition] + 1);
             }
             break;
         case ']':
-            file.seekg(rightBrackets[operationPosition] - 1);
+            file.seekg(rightBrackets[operationPosition]);
             break;
         default:
             break;
@@ -116,31 +144,6 @@ void Interpreter::copy(const Interpreter& other)
     size = other.size;
 }
 
-Interpreter::Interpreter() : cells(new Byte[30000]{}), currentCell(0), size(30000)
-{}
-
-Interpreter::Interpreter(const std::string& _fileName, size_t _size) : fileName(_fileName), cells(new Byte[_size]{}), currentCell(0), size(_size)
-{}
-
-Interpreter::Interpreter(const Interpreter& other) : cells(nullptr), currentCell(0), size(0)
-{
-    copy(other);
-}
-
-Interpreter& Interpreter::operator=(const Interpreter& other)
-{
-    if (this != &other)
-    {
-        copy(other);
-    }
-    return *this;
-}
-
-Interpreter::~Interpreter()
-{
-    deallocate();
-}
-
 void Interpreter::incrementValue()
 {
     ++cells[currentCell];
@@ -176,17 +179,47 @@ void Interpreter::read()
     std::cin >> cells[currentCell];
 }
 
+Interpreter::Interpreter() : cells(new Byte[30000]{}), currentCell(0), size(30000)
+{}
+
+Interpreter::Interpreter(const std::string& _fileName, size_t _size) : fileName(_fileName), cells(new Byte[_size]{}), currentCell(0), size(_size)
+{}
+
+Interpreter::Interpreter(const Interpreter& other) : cells(nullptr), currentCell(0), size(0)
+{
+    copy(other);
+}
+
+Interpreter& Interpreter::operator=(const Interpreter& other)
+{
+    if (this != &other)
+    {
+        copy(other);
+    }
+    return *this;
+}
+
+Interpreter::~Interpreter()
+{
+    deallocate();
+}
+
 void Interpreter::executeCode()
 {
+    removeRedundantCharacters();
     validateCode();
     std::ifstream file(fileName, std::ios::in);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("The given file couldn't be opened!");
+    }
     char operation{};
     while (file.good())
     {
         file.get(operation);
-        size_t operationPosition = file.tellg().operator std::streamoff() - 1;
         executeOperation(operation, file);
     }
 }
+
 
 
