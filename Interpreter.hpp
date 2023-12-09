@@ -9,7 +9,7 @@
 #include <queue>
 #include <stack>
 #include "Byte.hpp"
-#include "HelpterFunctions.hpp"
+#include "HelperFunctions.hpp"
 
 class Interpreter
 {

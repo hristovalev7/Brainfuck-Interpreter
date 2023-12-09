@@ -1,4 +1,4 @@
-#include "HelpterFunctions.hpp"
+#include "HelperFunctions.hpp"
 
 bool isOperation(char character)
 {

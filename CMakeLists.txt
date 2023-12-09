@@ -8,5 +8,5 @@ add_executable(BrainfuckInterpreter main.cpp
         Interpreter.hpp
         Byte.cpp
         Byte.hpp
-        HelpterFunctions.cpp
-        HelpterFunctions.hpp)
+        HelperFunctions.cpp
+        HelperFunctions.hpp)
