@@ -1,5 +1,71 @@
 #include "Interpreter.hpp"
 
+void Interpreter::validateCode()
+{
+    std::ifstream file(fileName, std::ios::in);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("The given file couldn't be opened!\n");
+    }
+    char currentChar{};
+    std::stack<size_t> LBrackets;
+    while (file.good())
+    {
+        if (currentChar == '[')
+        {
+            LBrackets.push(file.tellg().operator std::streamoff() - 1);
+        }
+        else if (currentChar == ']')
+        {
+            leftBrackets[LBrackets.top()] = file.tellg().operator std::streamoff() - 1;
+            rightBrackets[file.tellg().operator std::streamoff() - 1] = LBrackets.top();
+            LBrackets.pop();
+        }
+        file.get(currentChar);
+    }
+    if (!LBrackets.empty())
+    {
+        throw std::runtime_error("The number of '[' doesn't match the number of ']'");
+    }
+}
+
+void Interpreter::executeOperation(char operation, std::ifstream& file)
+{
+    size_t operationPosition = file.tellg().operator std::streamoff() - 1;
+    switch (operation)
+    {
+        case '+':
+            incrementValue();
+            break;
+        case '-':
+            decrementValue();
+            break;
+        case '>':
+            incrementPointer();
+            break;
+        case '<':
+            decrementPointer();
+            break;
+        case '.':
+            print();
+            break;
+        case ',':
+            read();
+            break;
+        case '[':
+            if (cells[currentCell] == Byte(0))
+            {
+                file.seekg(leftBrackets[operationPosition] - 1 + 1);
+            }
+            break;
+        case ']':
+            file.seekg(rightBrackets[operationPosition] - 1);
+            break;
+        default:
+            break;
+    }
+}
+
 void Interpreter::keepPointerInBounds() const
 {
     if (currentCell == 0)
@@ -10,7 +76,7 @@ void Interpreter::keepPointerInBounds() const
 
 void Interpreter::resize()
 {
-    Interpreter interpreter(size * 2);
+    Interpreter interpreter(fileName, size * 2);
     interpreter.copy(this->cells, this->size);
     interpreter.currentCell = currentCell;
     *this = interpreter;
@@ -26,10 +92,10 @@ void Interpreter::deallocate()
 
 void Interpreter::allocate(size_t numberOfCells)
 {
-    cells = new int[numberOfCells]{};
+    cells = new Byte[numberOfCells]{};
 }
 
-void Interpreter::copy(const int* otherCells, size_t otherSize)
+void Interpreter::copy(const Byte* otherCells, size_t otherSize)
 {
     if (otherSize == 0)
     {
@@ -50,10 +116,10 @@ void Interpreter::copy(const Interpreter& other)
     size = other.size;
 }
 
-Interpreter::Interpreter() : cells(new int[30000]{}), currentCell(0), size(30000)
+Interpreter::Interpreter() : cells(new Byte[30000]{}), currentCell(0), size(30000)
 {}
 
-Interpreter::Interpreter(size_t _size) : cells(new int[_size]{}), currentCell(0), size(_size)
+Interpreter::Interpreter(const std::string& _fileName, size_t _size) : fileName(_fileName), cells(new Byte[_size]{}), currentCell(0), size(_size)
 {}
 
 Interpreter::Interpreter(const Interpreter& other) : cells(nullptr), currentCell(0), size(0)
@@ -96,16 +162,31 @@ void Interpreter::incrementPointer()
 
 void Interpreter::decrementPointer()
 {
-    --currentCell;
     keepPointerInBounds();
+    --currentCell;
 }
 
 void Interpreter::print() const
 {
-    printf("%c", cells[currentCell]);
+    std::cout << cells[currentCell];
 }
 
 void Interpreter::read()
 {
-    scanf("%d", &cells[currentCell]);
+    std::cin >> cells[currentCell];
 }
+
+void Interpreter::executeCode()
+{
+    validateCode();
+    std::ifstream file(fileName, std::ios::in);
+    char operation{};
+    while (file.good())
+    {
+        file.get(operation);
+        size_t operationPosition = file.tellg().operator std::streamoff() - 1;
+        executeOperation(operation, file);
+    }
+}
+
+

@@ -2,16 +2,27 @@
 #define BRAINFUCKINTERPRETER_INTERPRETER_HPP
 
 #include <fstream>
-#include <cstdio>
+#include <iostream>
 #include <limits>
 #include <exception>
+#include <unordered_map>
+#include <queue>
+#include <stack>
+#include "Byte.hpp"
 
 class Interpreter
 {
 private:
-    int* cells;
+    std::string fileName{};
+    Byte* cells;
     unsigned int currentCell;
     size_t size;
+    std::unordered_map<size_t, size_t> leftBrackets;
+    std::unordered_map<size_t, size_t> rightBrackets;
+
+    void validateCode();
+
+    void executeOperation(char operation, std::ifstream& ifstream);
 
     void keepPointerInBounds() const;
 
@@ -21,14 +32,14 @@ private:
 
     void allocate(size_t numberOfCells);
 
-    void copy(const int* otherCells, size_t otherSize);
+    void copy(const Byte* otherCells, size_t otherSize);
 
     void copy(const Interpreter& other);
 
 public:
     Interpreter();
 
-    explicit Interpreter(size_t _size);
+    explicit Interpreter(const std::string& _fileName, size_t _size);
 
     Interpreter(const Interpreter& other);
 
@@ -47,6 +58,8 @@ public:
     void print() const;
 
     void read();
+
+    void executeCode();
 };
 
 #endif //BRAINFUCKINTERPRETER_INTERPRETER_HPP
