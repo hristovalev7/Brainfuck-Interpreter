@@ -3,10 +3,7 @@
 void Interpreter::removeRedundantCharacters()
 {
     std::ifstream fileR(fileName, std::ios::in);
-    if (!fileR.is_open())
-    {
-        throw std::runtime_error("The given file couldn't be opened!");
-    }
+    ensureFileIsOpen(fileR);
     std::queue<char> chars;
     char currentChar{};
     while (fileR.good() && fileR.peek() != EOF)
@@ -19,6 +16,7 @@ void Interpreter::removeRedundantCharacters()
     }
     fileR.close();
     std::ofstream fileW = std::ofstream(fileName, std::ios::trunc | std::ios::out);
+    ensureFileIsOpen(fileW);
     while (fileW.good() && !chars.empty())
     {
         fileW.put(chars.front());
@@ -30,10 +28,7 @@ void Interpreter::removeRedundantCharacters()
 void Interpreter::validateCode()
 {
     std::ifstream file(fileName, std::ios::in);
-    if (!file.is_open())
-    {
-        throw std::runtime_error("The given file couldn't be opened!\n");
-    }
+    ensureFileIsOpen(file);
     char currentChar{};
     std::stack<size_t> LBrackets;
     while (file.good())
@@ -209,6 +204,7 @@ void Interpreter::executeCode()
     removeRedundantCharacters();
     validateCode();
     std::ifstream file(fileName, std::ios::in);
+    ensureFileIsOpen(file);
     if (!file.is_open())
     {
         throw std::runtime_error("The given file couldn't be opened!");
@@ -220,6 +216,4 @@ void Interpreter::executeCode()
         executeOperation(operation, file);
     }
 }
-
-
 
