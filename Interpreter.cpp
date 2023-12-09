@@ -76,13 +76,10 @@ void Interpreter::executeOperation(char operation, std::ifstream& file)
             read();
             break;
         case '[':
-            if (cells[currentCell] == Byte(0))
-            {
-                file.seekg(leftBrackets[operationPosition] + 1);
-            }
+            leftBracket(file, operationPosition);
             break;
         case ']':
-            file.seekg(rightBrackets[operationPosition]);
+            rightBracket(file, operationPosition);
             break;
         default:
             break;
@@ -172,6 +169,19 @@ void Interpreter::print() const
 void Interpreter::read()
 {
     std::cin >> cells[currentCell];
+}
+
+void Interpreter::leftBracket(std::ifstream& file, size_t operationPosition)
+{
+    if (cells[currentCell] == Byte(0))
+    {
+        file.seekg(leftBrackets[operationPosition] + 1);
+    }
+}
+
+void Interpreter::rightBracket(std::ifstream& file, size_t operationPosition)
+{
+    file.seekg(rightBrackets[operationPosition]);
 }
 
 Interpreter::Interpreter() : cells(new Byte[30000]{}), currentCell(0), size(30000)

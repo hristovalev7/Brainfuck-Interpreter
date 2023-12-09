@@ -51,6 +51,10 @@ private:
 
     void read();
 
+    void leftBracket(std::ifstream& file, size_t operationPosition);
+
+    void rightBracket(std::ifstream& file, size_t operationPosition);
+
 public:
     Interpreter();
 
