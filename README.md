@@ -1,7 +1,7 @@
 # About the project
 This is a simple Brainfuck interpreter written in C++.
 ## Supported syntax
-Currently the interpreter doesn't support negative values for the data pointer(i.e. moving the data pointer to the left of the first cell), also the interpreter removes all characters that are not an operation in the Brainfuck language. Keep in mind that the maximum value of each cell is 255 and the minimum - 0. 
+Currently the interpreter doesn't support negative values for the data pointer (i.e. moving the data pointer to the left of the first cell), also the interpreter removes all characters that are not an operation in the Brainfuck language. Keep in mind that the maximum value of each cell is 255 and the minimum - 0. 
 # The Brainfuck language
 Brainfuck is an esoteric programming language that consists of only 8 simple operations. While this may seem extremely insufficient, the language is actually Turing complete!
 ## How does the language work?
@@ -16,11 +16,11 @@ The way Brainfuck works is actually pretty simple. There is an array of bytes in
 + , Read a single character of input and store its ASCII value in the byte at the data pointer.
 + . Output the byte at the data pointer as an ASCII character
 ## Examples
-### Hello World!
+### Hello World! [^1]
 ```brainfuck
 ++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
 ```
-### Hello World! (with comments)
+### Hello World! (with comments) [^2]
 ```brainfuck
 [ This program prints "Hello World!" and a newline to the screen, its
   length is 106 active command characters. [It is not the shortest.]
@@ -66,7 +66,7 @@ Pointer :   ^
 >>+.                    Add 1 to Cell #5 gives us an exclamation point
 >++.                    And finally a newline from Cell #6
 ```
-### ROT13
+### ROT13 [^3]
 ```brainfuck
 -,+[                         Read first character and start outer character reading loop
     -[                       Skip forward if character is 0
@@ -97,3 +97,26 @@ Pointer :   ^
     <-,+                     Read next character
 ]                            End character reading loop
 ```
+### Factorial [^4]
+This program does **not** finish so you need to kill it!!!
+```brainfuck
+>>>>++>+[
+    [
+        >[>>]<[>+>]<<[>->>+<<<-]>+[
+            [+>>[<<+>>-]>]+[-<<+<]>-[
+                -[<+>>+<-]++++++[>++++++++<-]+>.[-]<<[
+                    >>>[[<<+>+>-]>>>]<<<<[[>+<-]<-<<]>-
+                ]>>>[
+                    <<-[<<+>>-]<+++++++++<[
+                        >[->+>]>>>[<<[<+>-]>>>+>>[-<]<[>]>+<]<<<<<<-
+                    ]>[-]>+>>[<<<+>>>-]>>>
+                ]<<<+[-[+>>]<<<]>[<<<]>
+            ]>>>[<[>>>]<<<[[>>>+<<<-]<<<]>>>>>>>-[<]>>>[<<]<<[>+>]<]<<
+        ]++>>
+    ]<<++++++++.+
+]
+```
+[^1]: https://en.wikipedia.org/wiki/Brainfuck#Hello_World!
+[^2]: https://en.wikipedia.org/wiki/Brainfuck#Hello_World!
+[^3]: https://en.wikipedia.org/wiki/Brainfuck#ROT13
+[^4]: https://brainfuck.org/factorial2.b
