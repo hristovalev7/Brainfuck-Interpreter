@@ -215,12 +215,8 @@ void Interpreter::executeCode()
     validateCode();
     std::ifstream file(fileName, std::ios::in);
     ensureFileIsOpen(file);
-    if (!file.is_open())
-    {
-        throw std::runtime_error("The given file couldn't be opened!");
-    }
     char operation{};
-    while (file.good())
+    while (file.good() && file.peek() != EOF)
     {
         file.get(operation);
         executeOperation(operation, file);
