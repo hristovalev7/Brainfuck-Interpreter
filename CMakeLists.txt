@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(BrainfuckInterpreter main.cpp
         Interpreter.cpp
         Interpreter.hpp
-        Byte.cpp
-        Byte.hpp
+        Cell.cpp
+        Cell.hpp
         HelperFunctions.cpp
         HelperFunctions.hpp)

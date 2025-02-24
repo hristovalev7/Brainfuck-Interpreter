@@ -8,14 +8,14 @@
 #include <unordered_map>
 #include <queue>
 #include <stack>
-#include "Byte.hpp"
+#include "Cell.hpp"
 #include "HelperFunctions.hpp"
 
 class Interpreter
 {
 private:
     std::string fileName{};
-    Byte* cells;
+    Cell* cells;
     unsigned int currentCell;
     size_t size;
     std::unordered_map<size_t, size_t> leftBrackets;
@@ -35,7 +35,7 @@ private:
 
     void allocate(size_t numberOfCells);
 
-    void copy(const Byte* otherCells, size_t otherSize);
+    void copy(const Cell* otherCells, size_t otherSize);
 
     void copy(const Interpreter& other);
 

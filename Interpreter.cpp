@@ -112,10 +112,10 @@ void Interpreter::deallocate()
 
 void Interpreter::allocate(size_t numberOfCells)
 {
-    cells = new Byte[numberOfCells]{};
+    cells = new Cell[numberOfCells]{};
 }
 
-void Interpreter::copy(const Byte* otherCells, size_t otherSize)
+void Interpreter::copy(const Cell* otherCells, size_t otherSize)
 {
     if (otherSize == 0)
     {
@@ -173,7 +173,7 @@ void Interpreter::read()
 
 void Interpreter::leftBracket(std::ifstream& file, size_t operationPosition)
 {
-    if (cells[currentCell] == Byte(0))
+    if (cells[currentCell] == Cell(0))
     {
         file.seekg(leftBrackets[operationPosition] + 1);
     }
@@ -184,10 +184,10 @@ void Interpreter::rightBracket(std::ifstream& file, size_t operationPosition)
     file.seekg(rightBrackets[operationPosition]);
 }
 
-Interpreter::Interpreter() : cells(new Byte[30000]{}), currentCell(0), size(30000)
+Interpreter::Interpreter() : cells(new Cell[30000]{}), currentCell(0), size(30000)
 {}
 
-Interpreter::Interpreter(const std::string& _fileName, size_t _size) : fileName(_fileName), cells(new Byte[_size]{}), currentCell(0), size(_size)
+Interpreter::Interpreter(const std::string& _fileName, size_t _size) : fileName(_fileName), cells(new Cell[_size]{}), currentCell(0), size(_size)
 {}
 
 Interpreter::Interpreter(const Interpreter& other) : cells(nullptr), currentCell(0), size(0)
