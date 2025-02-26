@@ -7,14 +7,16 @@ Brainfuck is an esoteric programming language that consists of only 8 simple ope
 ## How does the language work?
 The way Brainfuck works is actually pretty simple. There is an array of bytes initially set to 0 and a data pointer pointing to the current cell. The value of the cell can be changed with \+ (increase the value of the cell by one) or \- (decrease the value of the cell by one), the pointer can be moved by using \> (move the pointer to the right) or \< (move the pointer to the left).
 ## Operations cheat sheet
-+ \> Increment the data pointer by one (move to the right).
-+ < Decrement the data pointer by one (move to the left).
-+ \+ Increment the byte at the data pointer by one.
-+ \- Decrement the byte at the data pointer by one.
-+ \[ Jump forward to the command after the corresponding \] if the byte at the data pointer is 0.
-+ \] Jump back to the command after the corresponding \[ if the byte at the data pointer is nonzero.
-+ , Read a single character of input and store its ASCII value in the byte at the data pointer.
-+ . Output the byte at the data pointer as an ASCII character
+| Operation | Description |
+| --------- | ----------- |
+| > | Increment the data pointer by one (move to the right)|
+| < | Dencrement the data pointer by one (move to the left)|
+| + | Increment the byte at the data pointer by one.|
+| - | Decrement the byte at the data pointer by one.|
+| [ | Jump forward to the command after the corresponding ] if the byte at the data pointer is 0.|
+| ] | Jump back to the command after the corresponding \[ if the byte at the data pointer is nonzero.|
+| , | Read a single character of input and store its ASCII value in the byte at the data pointer.|
+| . | Output the byte at the data pointer as an ASCII character|
 ## Examples
 ### Hello World! [^1]
 ```brainfuck
